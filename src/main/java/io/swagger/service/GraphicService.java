@@ -4,7 +4,6 @@ import org.threeten.bp.OffsetDateTime;
 import java.util.List;
 
 import io.swagger.model.Graphic;
-import io.swagger.model.Magnitude;
 
 public interface GraphicService {
 
@@ -13,8 +12,8 @@ public interface GraphicService {
     public boolean update(Graphic graphic);
     public Graphic getById(Long id);
     public boolean deleteById(Long id);
-    public List<Graphic> findByMagnitude(Magnitude magnitude);
-    public Graphic generate(Magnitude magnitude, OffsetDateTime startDate, OffsetDateTime endDate);
+    public List<Graphic> findByMagnitude(Long magnitude);
+    public Graphic generate(Long magnitude, OffsetDateTime startDate, OffsetDateTime endDate);
 
     public byte[] generatePdf(Long id);
     public byte[] generatePng(Long id);

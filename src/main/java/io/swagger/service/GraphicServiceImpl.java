@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.swagger.model.Graphic;
-import io.swagger.model.Magnitude;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +86,7 @@ public class GraphicServiceImpl implements GraphicService {
 	}
 
 	@Override
-	public List<Graphic> findByMagnitude(Magnitude magnitude) {
+	public List<Graphic> findByMagnitude(Long magnitude) {
         log.info("findByMagnitude: " + magnitude.toString());
         List<Graphic> listGraphics = new ArrayList<>();
 
@@ -101,7 +100,7 @@ public class GraphicServiceImpl implements GraphicService {
     }
 
 	@Override
-	public Graphic generate(Magnitude magnitude, OffsetDateTime startDate, OffsetDateTime endDate) {
+	public Graphic generate(Long magnitude, OffsetDateTime startDate, OffsetDateTime endDate) {
         log.info("generate: " + magnitude.toString() + " " + startDate + " " + endDate);
         Graphic graphic = new Graphic();
 

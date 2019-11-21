@@ -29,15 +29,15 @@ import java.util.Map;
 @Api(value = "graphics", description = "the graphics API")
 public interface GraphicsApi {
 
-    @ApiOperation(value = "Añadir nueva gráfica", nickname = "addGraphic", notes = "Añadir nueva gráfica", response = Long.class, tags={ "graphics", })
+    @ApiOperation(value = "Añadir nueva gráfica", nickname = "addGraphic", notes = "Añadir nueva gráfica", tags={ "graphics", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Operación válida", response = Long.class),
+        @ApiResponse(code = 200, message = "Operación válida"),
         @ApiResponse(code = 405, message = "No se pudo validar"),
         @ApiResponse(code = 500, message = "Error Interno") })
     @RequestMapping(value = "/graphics",
         consumes = { "application/json", "application/xml" },
         method = RequestMethod.POST)
-    ResponseEntity<Long> addGraphic(@ApiParam(value = "Gráfica" ,required=true )  @Valid @RequestBody Graphic body);
+    ResponseEntity<Void> addGraphic(@ApiParam(value = "Gráfica" ,required=true )  @Valid @RequestBody Graphic body);
 
 
     @ApiOperation(value = "Elimina una determinada gráfica por ID", nickname = "deleteGraphicById", notes = "Elimina una gráfica", tags={ "graphics", })
