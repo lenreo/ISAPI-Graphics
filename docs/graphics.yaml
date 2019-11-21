@@ -61,6 +61,11 @@ paths:
       responses:
         200:
           description: "Operación válida"
+          content:
+            text/plain:
+              schema:
+                type: integer
+                format: int64
         405:
           description: "No se pudo validar"
           content: {}
@@ -227,9 +232,6 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    Id:
-      type: integer
-      format: int64
     Date:
       type: string
       format: date-time
@@ -240,9 +242,11 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          type: integer
+          format: int64
         magnitude:
-          $ref: '#/components/schemas/Magnitude'
+          type: integer
+          format: int64
         start_date:
           $ref: '#/components/schemas/Date'
         end_date:
@@ -278,7 +282,8 @@ components:
       description: ID de la gráfica
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        type: integer
+        format: int64
     emailParam:
       name: email
       in: query
