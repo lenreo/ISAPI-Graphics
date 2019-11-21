@@ -1,0 +1,299 @@
+openapi: 3.0.1
+info:
+  title: GeoCardioBand Graphics
+  description: 'API encargada de la gestión de gráficas del proyecto GeoCardioBand.'
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: lutevi04@alumnos.unex.es
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://www.geocardioband.com/api/v1/graphics
+- url: http://www.geocardioband.com/api/v1/graphics
+tags:
+- name: graficas
+  description: Gestión de gráficas
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+paths:  
+  /graphics/generate:
+    get:
+      tags:
+      - graphics
+      summary: Genera una gráfica
+      description: Genera una gráfica dada una magnitud y un rango de fechas
+      operationId: generate
+      parameters:
+        - $ref: '#/components/parameters/magnitudeParam'
+        - $ref: '#/components/parameters/startDateParam'
+        - $ref: '#/components/parameters/endDateParam'
+      responses:
+        200:
+          description: "Operación válida"
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Graphic'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Graphic'
+        400:
+          description: Bad request. User ID must be an integer and larger than 0.
+        405:
+          description: "No se pudo validar"
+          content: {}
+      x-codegen-request-body-name: body
+  /graphics:
+    post:
+      tags:
+      - graphics
+      summary: Añadir nueva gráfica
+      description: Añadir nueva gráfica
+      operationId: addGraphic
+      requestBody:
+        $ref: '#/components/requestBodies/Graphic'
+      responses:
+        200:
+          description: "Operación válida"
+        405:
+          description: "No se pudo validar"
+          content: {}
+        500:
+          description: "Error Interno"
+          content: {}
+      x-codegen-request-body-name: body
+    put:
+      tags:
+      - graphics
+      summary: Actualizar una gráfica
+      description: Actualizar una gráfica
+      operationId: updateGraphic
+      requestBody:
+        $ref: '#/components/requestBodies/Graphic'
+      responses:
+        200:
+          description: "Operación válida"
+        400:
+          description: "ID proporcionado no válida"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+        405:
+          description: "No se pudo validar"
+          content: {}
+        500:
+          description: "Error Interno"
+          content: {}
+      x-codegen-request-body-name: body
+  /graphics/findByMagnitude:
+    get:
+      tags:
+      - graphics
+      summary: Encuentra gráficas por magnitud
+      description: Busca las gráficas que sean de una determinada magnitud
+      operationId: findGraphicByMagnitude
+      parameters:
+        - $ref: '#/components/parameters/magnitudeParam'
+      responses:
+        200:
+          description: "Operación válida"
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Graphic'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Graphic'
+        405:
+          description: "No se pudo validar"
+          content: {}
+      x-codegen-request-body-name: body
+  /graphics/{id}:
+    get:
+      tags:
+      - graphics
+      summary: Encontrar una determinada gráfica por ID
+      description: Devuelve una gráfica
+      operationId: getGraphicById
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        200:
+          description: "Operación válida"
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Graphic'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Graphic'
+        400:
+          description: "ID proporcionado no valido"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+    delete:
+      tags:
+      - graphics
+      summary: Elimina una determinada gráfica por ID
+      description: Elimina una gráfica
+      operationId: deleteGraphicById
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        400:
+          description: "ID proporcionado no valido"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+  /graphics/{id}/toPng:
+    get:
+      tags:
+      - graphics
+      summary: Devuelve el PNG de una gráfica
+      description: Encontrar una determinada gráfica por ID y generar PNG
+      operationId: generatePng
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        200:
+          description: "Operacion valida"
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: "ID proporcionado no valido"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+  /graphics/{id}/toPdf:
+    get:
+      tags:
+      - graphics
+      summary: Devuelve el PDF de una gráfica
+      description: Encontrar una determinada gráfica por ID y generar PDF
+      operationId: generatePdf
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        200:
+          description: "Operacion valida"
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: "ID proporcionado no valido"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+  /graphics/{id}/sendEmail:
+    get:
+      tags:
+      - graphics
+      summary: Envía una gráfica por email
+      description: Encontrar una determinada gráfica por ID y enviarla por email
+      operationId: sendEmail
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+        - $ref: '#/components/parameters/emailParam'
+      responses:
+        200:
+          description: "Operacion válida"
+        400:
+          description: "Datos de entrada no válidos"
+          content: {}
+        404:
+          description: "Gráfica no encontrada"
+          content: {}
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Id:
+      type: integer
+      format: int64
+    Date:
+      type: string
+      format: date-time
+    Email:
+      type: string
+      format: email
+    Graphic:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        magnitude:
+          $ref: '#/components/schemas/Magnitude'
+        start_date:
+          $ref: '#/components/schemas/Date'
+        end_date:
+          $ref: '#/components/schemas/Date'
+        data:
+          type: string
+  parameters:
+    magnitudeParam: 
+      name: magnitude
+      in: query
+      description: Magnitud de las medidas
+      required: true
+      schema:
+        type: integer
+        format: int64
+    startDateParam:
+      name: startDate
+      in: query
+      description: Fecha de inicio del rango temporal de las medidas
+      required: true
+      schema:
+        $ref: '#/components/schemas/Date'
+    endDateParam:
+      name: endDate
+      in: query
+      description: Fecha de fin del rango temporal de las medidas
+      required: true
+      schema:
+        $ref: '#/components/schemas/Date'
+    idParam:
+      name: id
+      in: path
+      description: ID de la gráfica
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    emailParam:
+      name: email
+      in: query
+      description: Dirección de correo
+      required: true
+      schema:
+        $ref: '#/components/schemas/Email'
+  requestBodies:
+    Graphic:
+      description: Gráfica
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Graphic'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Graphic'
+      required: true
