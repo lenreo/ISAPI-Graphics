@@ -78,7 +78,7 @@ public interface GraphicsApi {
     @RequestMapping(value = "/graphics/{id}/toPdf",
         produces = { "application/pdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<File> generatePdf(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id);
+    ResponseEntity<byte[]> generatePdf(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "Devuelve el PNG de una gráfica", nickname = "generatePng", notes = "Encontrar una determinada gráfica por ID y generar PNG", response = File.class, tags={ "graphics", })
@@ -89,7 +89,7 @@ public interface GraphicsApi {
     @RequestMapping(value = "/graphics/{id}/toPng",
         produces = { "image/png" }, 
         method = RequestMethod.GET)
-    ResponseEntity<File> generatePng(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id);
+    ResponseEntity<byte[]> generatePng(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "Encontrar una determinada gráfica por ID", nickname = "getGraphicById", notes = "Devuelve una gráfica", response = Graphic.class, tags={ "graphics", })

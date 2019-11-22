@@ -1,11 +1,11 @@
 package io.swagger.api;
 
-import java.io.File;
-import io.swagger.model.Graphic;
-import io.swagger.service.GraphicService;
-import org.threeten.bp.OffsetDateTime;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
+import org.threeten.bp.OffsetDateTime;
 
-import javax.validation.constraints.*;
-import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.ApiParam;
+import io.swagger.model.Graphic;
+import io.swagger.service.GraphicService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-11-21T19:15:10.264Z[GMT]")
 @Controller
@@ -97,28 +94,18 @@ public class GraphicsApiController implements GraphicsApi {
         return new ResponseEntity<Graphic>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<File> generatePdf(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> generatePdf(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id) {
         log.info("generatePdf");
 
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            byte[] bytes = graphicService.generatePdf(id);
-            return new ResponseEntity<File>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<File>(HttpStatus.NOT_IMPLEMENTED);
+	    byte[] bytes = graphicService.generatePdf(id);
+		return new ResponseEntity<byte[]>(bytes, HttpStatus.OK);
     }
 
-    public ResponseEntity<File> generatePng(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> generatePng(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id) {
         log.info("generatePng");
 
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("image/png")) {
-            byte[] bytes = graphicService.generatePng(id);
-            return new ResponseEntity<File>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<File>(HttpStatus.NOT_IMPLEMENTED);
+	    byte[] bytes = graphicService.generatePng(id);
+		return new ResponseEntity<byte[]>(bytes, HttpStatus.OK);
     }
 
     public ResponseEntity<Graphic> getGraphicById(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id) {
@@ -136,6 +123,8 @@ public class GraphicsApiController implements GraphicsApi {
     public ResponseEntity<Void> sendEmail(@ApiParam(value = "ID de la gráfica",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "Dirección de correo", required = true) @Valid @RequestParam(value = "email", required = true) String email) {
         log.info("sendEmail");
 
+        graphicService.sendEmail(id);
+        
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
